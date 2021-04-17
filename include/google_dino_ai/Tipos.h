@@ -7,6 +7,13 @@
 #define QTD_SPRITE_CACTUS       6
 #define MAX_OBSTACULOS          7
 
+enum States : int {
+  Standing = 0,
+  Lying,
+  Jumping,
+  Died,
+  Flying
+};
 
 
 typedef struct dinossauro
@@ -15,7 +22,7 @@ typedef struct dinossauro
     double VelocidadeY;
     int Frame;
     int SpriteAtual;
-    int Estado;
+    States Estado;
     Sprite sprite[10];
     int TimerFrame;
     int ResetarFitness;

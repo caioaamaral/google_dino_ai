@@ -32,7 +32,7 @@ void AplicarGravidade()
     {
         if(Dinossauros[i].Y > 15)
         {
-            if(Dinossauros[i].Estado != 4)          /// VOANDO
+            if(Dinossauros[i].Estado != States::Flying)
             {
                 Dinossauros[i].VelocidadeY = Dinossauros[i].VelocidadeY - (0.08);
             }
@@ -54,21 +54,21 @@ void AplicarGravidade()
         {
             Dinossauros[i].VelocidadeY = 0;
             Dinossauros[i].Y = 15;
-            if(Dinossauros[i].Estado == 2)
-                Dinossauros[i].Estado = 0;
+            if(Dinossauros[i].Estado == States::Jumping)
+                Dinossauros[i].Estado = States::Standing;
         }
     }
 }
 
-void ControlarEstadoDinossauros()       /// Função responsavel por calcular a decisão da rede neural e aplicar no dinossauro (ou seja, é a função que faz ele pular, abaixar ou usar o aviao)
+void ControlarEstadoDinossauros()  /// Função responsavel por calcular a decisão da rede neural e aplicar no dinossauro (ou seja, é a função que faz ele pular, abaixar ou usar o aviao)
 {
-    int Abaixar = 0, Pular = 0, Aviao = 0;
+    bool Abaixar = false, Pular = false, Aviao = false;
     double Saida[10];
     double Entrada[10];
 
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    for(int i = 0; i < QuantidadeDinossauros; i++)
     {
-        if(Dinossauros[i].Estado != 3)
+        if(Dinossauros[i].Estado != States::Died)
         {
             Entrada[0] = DistanciaProximoObstaculo(Dinossauros[i].X);            
             Entrada[1] = LarguraProximoObstaculo(Dinossauros[i].X);              
@@ -82,38 +82,38 @@ void ControlarEstadoDinossauros()       /// Função responsavel por calcular a 
             RNA_CopiarDaSaida(Dinossauros[i].Cerebro, Saida);           /// Extraindo a decisão para vetor ''saida''
 
             if(Saida[0] == 0.0)
-                Pular = 0;
+                Pular = false;
             else
-                Pular = 1;
+                Pular = true;
 
             if(Saida[1] == 0.0)
-                Abaixar = 0;
+                Abaixar = false;
             else
-                Abaixar = 1;
+                Abaixar = true;
 
             if(Saida[2] == 0.0)
-                Aviao = 0;
+                Aviao = false;
             else
-                Aviao = 1;
+                Aviao = true;
 
 
-            if(MODO_JOGO == 1 && i == 1)
+            if(MODO_JOGO == 1 && i == 0)
             {
-                Pular = 0;
-                Abaixar = 0;
-                Aviao = 0;
+                Pular = false;
+                Abaixar = false;
+                Aviao = false;
 
                 if(PIG_meuTeclado[TECLA_CIMA] == 1)
                 {
-                    Pular = 1;
+                    Pular = true;
                 }
                 if(PIG_meuTeclado[TECLA_BAIXO] == 1)
                 {
-                    Abaixar = 1;
+                    Abaixar = true;
                 }
                 if(PIG_meuTeclado[TECLA_BARRAESPACO] == 1)
                 {
-                    Aviao = 1;
+                    Aviao = true;
                 }
 
                 Saida[0] = Abaixar;
@@ -124,32 +124,32 @@ void ControlarEstadoDinossauros()       /// Função responsavel por calcular a 
             if(DINO_BRAIN_QTD_OUTPUT == 2)
                 Aviao = 0;
 
-            if(Dinossauros[i].Estado != 4)  /// Voando
+            if(Dinossauros[i].Estado != States::Flying)
             {
-                if(Dinossauros[i].Estado != 2)
+                if(Dinossauros[i].Estado != States::Jumping)
                 {
-                    Dinossauros[i].Estado = 0;
+                    Dinossauros[i].Estado = States::Standing;
                 }
-                if(Abaixar && Dinossauros[i].Estado != 2)
+                if(Abaixar && Dinossauros[i].Estado != States::Jumping)
                 {
-                    Dinossauros[i].Estado = 1;
+                    Dinossauros[i].Estado = States::Lying;
                 }
-                if(Abaixar && Dinossauros[i].Estado == 2)
+                if(Abaixar && Dinossauros[i].Estado == States::Jumping)
                 {
                     if(Dinossauros[i].VelocidadeY > 0)
                         Dinossauros[i].VelocidadeY = 0;
                     Dinossauros[i].Y = Dinossauros[i].Y - 2;
                 }
-                if(Pular && Dinossauros[i].Estado != 2)
+                if(Pular && Dinossauros[i].Estado != States::Jumping)
                 {
-                    Dinossauros[i].Estado = 2;
+                    Dinossauros[i].Estado = States::Jumping;
                     Dinossauros[i].Y = Dinossauros[i].Y + 1;
 
                     Dinossauros[i].VelocidadeY = Dinossauros[i].VelocidadeY + 4.0;
                 }
                 if(Aviao && Dinossauros[i].AviaoCooldown <= 0)
                 {
-                    Dinossauros[i].Estado = 4;
+                    Dinossauros[i].Estado = States::Flying;
                     Dinossauros[i].Y = Dinossauros[i].Y + 1;
                     if(Dinossauros[i].VelocidadeY <= 0.5 && Dinossauros[i].Y < 25)
                     {
@@ -163,7 +163,7 @@ void ControlarEstadoDinossauros()       /// Função responsavel por calcular a 
                 if(Dinossauros[i].AviaoDeslocamento >= 820.0)
                 {
                     Dinossauros[i].AviaoDeslocamento = 0;
-                    Dinossauros[i].Estado = 2;
+                    Dinossauros[i].Estado = States::Jumping;
                 }
                 else
                 {
@@ -173,23 +173,23 @@ void ControlarEstadoDinossauros()       /// Função responsavel por calcular a 
             Dinossauros[i].AviaoCooldown = Dinossauros[i].AviaoCooldown - fabs(VELOCIDADE);
 
 
-            if(Dinossauros[i].Estado == 0) /// Em pé
+            if(Dinossauros[i].Estado == States::Standing)
             {
                 Dinossauros[i].SpriteAtual = 0 + Dinossauros[i].Frame;
             }
-            if(Dinossauros[i].Estado == 1) /// Deitado
+            if(Dinossauros[i].Estado == States::Lying)
             {
                 Dinossauros[i].SpriteAtual = 2 + Dinossauros[i].Frame;
             }
-            if(Dinossauros[i].Estado == 2) /// Pulando
+            if(Dinossauros[i].Estado == States::Jumping)
             {
                 Dinossauros[i].SpriteAtual = 4 + Dinossauros[i].Frame;
             }
-            if(Dinossauros[i].Estado == 3) /// Muerto
+            if(Dinossauros[i].Estado == States::Died)
             {
                 Dinossauros[i].SpriteAtual = 6 + Dinossauros[i].Frame;
             }
-            if(Dinossauros[i].Estado == 4)  /// Voando
+            if(Dinossauros[i].Estado == States::Flying)
             {
                 Dinossauros[i].SpriteAtual = 8 + Dinossauros[i].Frame;
             }
@@ -396,6 +396,7 @@ int main(int argc, char* args[])
     {
         Desenhar();
         EncerrarDesenho();
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
     secondary_thread.join();
     FinalizarJanela();
