@@ -23,7 +23,7 @@ public:
 private:
   Manager() = default;
 
-  std::vector<Dinossauro> Dinossauros = std::vector<Dinossauro>(POPULACAO_TAMANHO);
+  std::vector<Dinossauro> Dinossauros;
 };
 
 namespace manager {

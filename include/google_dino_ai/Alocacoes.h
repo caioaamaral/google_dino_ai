@@ -27,14 +27,19 @@ void AlocarDinossauro(int ControladorCor)
 
     InicializarDinossauro(QuantidadeDinossauros, NULL, 0, 0);
 
-    QuantidadeDinossauros = QuantidadeDinossauros + 1;
+    QuantidadeDinossauros++;
 }
 
 
 void AlocarDinossauros()
 {
+    auto& Dinossauros = manager::getDinosaurs();
+    Dinossauros.reserve(POPULACAO_TAMANHO);
+    Dinossauros.assign(POPULACAO_TAMANHO, Dinossauro());
+
     int controlador_cor = 0;
-    for(int i=0; i<POPULACAO_TAMANHO; i++)
+
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
         AlocarDinossauro(controlador_cor);
         controlador_cor = (controlador_cor+1)%8;
