@@ -3,7 +3,6 @@ project(google_dino_ai)
 
 set(CMAKE_CXX_STANDARD 14)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2")
 
 find_package(pig REQUIRED)
 find_package(sdl2_vendor REQUIRED)
