@@ -28,7 +28,8 @@ void UpdateStates();
 
 void AplicarGravidade()
 {
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    auto& Dinossauros = manager::getDinosaurs();
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(Dinossauros[i].Y > 15)
         {
@@ -66,6 +67,7 @@ void ControlarEstadoDinossauros()  /// Função responsavel por calcular a decis
     double Saida[10];
     double Entrada[10];
 
+    auto& Dinossauros = manager::getDinosaurs();
     for(int i = 0; i < QuantidadeDinossauros; i++)
     {
         if(Dinossauros[i].Estado != States::Died)
@@ -226,6 +228,8 @@ void EncerrarPartida()
 void CarregarRede()
 {
     FILE* f = fopen("rede","rb");
+
+    auto& Dinossauros = manager::getDinosaurs();
     fread(&Dinossauros[0].TamanhoDNA, 1, sizeof(int), f);
     fread(DNADaVez[0], Dinossauros[0].TamanhoDNA, sizeof(double), f);
     fclose(f);
@@ -253,7 +257,7 @@ void ConfiguracoesIniciais()
     FonteAzul           = CriarFonteNormal(PIG_RESOURCES_PATH"/arial.ttf", 15, AZUL,       0, PRETO);
     DistanciaRecorde    = 0;
     Geracao             = 0;
-    MelhorDinossauro    = &Dinossauros[0];
+    MelhorDinossauro    = &manager::getDinosaurs()[0];
 
     InicializarDNA();
     std::cout << "STARTING APP\n\n"; 
@@ -265,8 +269,7 @@ void ConfiguracoesIniciais()
 
 void RandomMutations()
 {
-    static double RangeRandom = Dinossauros[0].TamanhoDNA;
-
+    static double RangeRandom = manager::getDinosaurs()[0].TamanhoDNA;
     Dinossauro* Vetor[POPULACAO_TAMANHO];
     Dinossauro* Temp;
 
@@ -287,6 +290,7 @@ void RandomMutations()
         MediaFitnessPopulacao[GeracaoCompleta] = MediaFitnessGeracao();
     }
 
+    auto& Dinossauros = manager::getDinosaurs();
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
         Vetor[i] = &Dinossauros[i];

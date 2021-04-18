@@ -1,3 +1,5 @@
+#ifndef GOOGLE_DINO_AI_GOOGLE_DINO_AI_TIPOS_H
+#define GOOGLE_DINO_AI_GOOGLE_DINO_AI_TIPOS_H
 
 #define LARG_GRAFICO            600
 #define CHAO_QUANTIDADE         30
@@ -15,8 +17,7 @@ enum States : int {
   Flying
 };
 
-
-typedef struct dinossauro
+struct Dinossauro
 {
     double X, Y;
     double VelocidadeY;
@@ -37,49 +38,38 @@ typedef struct dinossauro
     double Fitness;
 
     RedeNeural* Cerebro;
+};
 
-}   Dinossauro;
-
-typedef struct obstaculo
+struct Obstaculo
 {
     double X, Y;
     int Tipo;
     Sprite* sprite[2];
     int TimerFrames;
     int FrameAtual;
+};
 
-}   Obstaculo;
-
-typedef struct chao
+struct Chao
 {
     double X, Y;
     Sprite sprite;
+};
 
-}   Chao;
-
-typedef struct montanha
+struct Montanha
 {
     double X[2], Y[2];
     Sprite sprite[2];
-
-}   Montanha;
-
-typedef struct nuvem
+};
+struct Nuvem
 {
     double X, Y;
     Sprite sprite;
+};
 
-}   Nuvem;
-
-typedef struct grafico
+struct Grafico
 {
     double MediaFitness[LARG_GRAFICO];
     double MelhorFitness[LARG_GRAFICO];
+};
 
-}   Grafico;
-
-
-
-
-
-
+#endif  // GOOGLE_DINO_AI_GOOGLE_DINO_AI_TIPOS_H

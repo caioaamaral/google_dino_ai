@@ -2,6 +2,7 @@
 
 void AtualizarMelhorDinossauro()
 {
+    auto& Dinossauros = manager::getDinosaurs();
     if(MODO_JOGO == 1)
     {
         MelhorDinossauro = &Dinossauros[0];
@@ -34,7 +35,8 @@ void AtualizarFramePassaro()
 
 void AtualizarFrameDinossauro()
 {
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    auto& Dinossauros = manager::getDinosaurs();
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(pig::TempoDecorrido(Dinossauros[i].TimerFrame) >= 0.1)
         {
@@ -46,7 +48,8 @@ void AtualizarFrameDinossauro()
 
 void AtualizarFrameAviao()
 {
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    auto& Dinossauros = manager::getDinosaurs();
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(pig::TempoDecorrido(Dinossauros[i].TimerFrameAviao) >= 0.03)
         {

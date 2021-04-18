@@ -1,5 +1,7 @@
 #include <pig/PIG_Timers.h>
 
+#include "google_dino_ai/Manager.h"
+
 int existeNuvem(double X, double Y)
 {
     for(int i=0; i<NUVEM_QUANTIDADE; i++)
@@ -48,7 +50,9 @@ void SalvarRedeArquivo()
 {
     double Maior = 0;
     int Indice = 0;
-    for(int i=0; i<POPULACAO_TAMANHO; i++)
+    auto& Dinossauros = manager::getDinosaurs();
+
+    for(int i=0; i<Dinossauros.size(); i++)
     {
         if(Dinossauros[i].Fitness > Maior)
         {

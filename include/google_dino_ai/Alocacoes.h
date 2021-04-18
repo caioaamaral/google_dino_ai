@@ -1,16 +1,16 @@
+#include "google_dino_ai/Manager.h"
 
 
-void AlocarDinossauro()
+void AlocarDinossauro(int ControladorCor)
 {
-    static int ControladorCor = 0;
-    int Tamanho;
+    int tamanho;
+    auto& Dinossauros = manager::getDinosaurs();
 
     static int num_calls = 0;
     std::cout << "\nAlocarDinossauro() call:" << num_of_calls++ << "\n";
-
-    for(int i=0; i<10; i++)
+    for(int i = 0; i < 10; i++)
     {
-        Dinossauros[QuantidadeDinossauros].sprite[i] = getDinossauroSprite(i, Cores[ControladorCor]);
+        Dinossauros[QuantidadeDinossauros].sprite[i] = makeDinoSprite(i, Cores[ControladorCor]);
     }
 
     Dinossauros[QuantidadeDinossauros].TimerFrame       = pig::CriarTimer();
@@ -22,24 +22,27 @@ void AlocarDinossauro()
                                                                      DINO_BRAIN_QTD_HIDE,
                                                                      DINO_BRAIN_QTD_OUTPUT);
 
-    Tamanho = RNA_QuantidadePesos(Dinossauros[QuantidadeDinossauros].Cerebro);
+    tamanho = RNA_QuantidadePesos(Dinossauros[QuantidadeDinossauros].Cerebro);
 
-    Dinossauros[QuantidadeDinossauros].TamanhoDNA = Tamanho;
-    Dinossauros[QuantidadeDinossauros].DNA = (double*)malloc(Tamanho*sizeof(double));
+    Dinossauros[QuantidadeDinossauros].TamanhoDNA = tamanho;
+    Dinossauros[QuantidadeDinossauros].DNA = (double*)malloc(tamanho*sizeof(double));
 
     InicializarDinossauro(QuantidadeDinossauros, NULL, 0, 0);
 
-    ControladorCor = (ControladorCor+1)%8;
     QuantidadeDinossauros = QuantidadeDinossauros + 1;
 }
 
+
 void AlocarDinossauros()
 {
+    int controlador_cor = 0;
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
-        AlocarDinossauro();
+        AlocarDinossauro(controlador_cor);
+        controlador_cor = (controlador_cor+1)%8;
     }
 }
+
 
 void AlocarObstaculos()
 {

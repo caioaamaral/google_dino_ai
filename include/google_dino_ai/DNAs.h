@@ -1,4 +1,4 @@
-
+#include "google_dino_ai/Manager.h"
 
     double* DNADaVez[POPULACAO_TAMANHO];
 
@@ -11,6 +11,7 @@
 double BestFitnessGeracao()
 {
     double Maior = 0;
+    auto& Dinossauros = manager::getDinosaurs();
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
         if(Dinossauros[i].Fitness > Maior)
@@ -24,6 +25,7 @@ double BestFitnessGeracao()
 double MediaFitnessGeracao()
 {
     double Media = 0;
+    auto& Dinossauros = manager::getDinosaurs();
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
         Media = Media + Dinossauros[i].Fitness;
@@ -48,6 +50,7 @@ double BestFitnessEver()
 
 void InicializarDNA()
 {
+    auto& Dinossauros = manager::getDinosaurs();
     int TamanhoDNA = Dinossauros[0].TamanhoDNA;
 
     for(int i=0; i<POPULACAO_TAMANHO; i++)

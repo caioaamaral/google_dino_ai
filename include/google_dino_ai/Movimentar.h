@@ -1,4 +1,4 @@
-
+#include "google_dino_ai/Manager.h"
 
 void MovimentarChao()
 {
@@ -60,15 +60,16 @@ void MovimentarObstaculos()
 
 void MovimentarDinossauros()
 {
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    auto& Dinossauros = manager::getDinosaurs();
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
-        if(Dinossauros[i].Estado == 3)  /// MUERTO
+        if(Dinossauros[i].Estado == States::Died)
         {
             Dinossauros[i].X = Dinossauros[i].X + VELOCIDADE;
         }
         else
         {
-            if(Dinossauros[i].Estado == 0 || Dinossauros[i].Estado == 1)
+            if(Dinossauros[i].Estado == States::Standing || Dinossauros[i].Estado == States::Lying)
             {
                 Dinossauros[i].Fitness = Dinossauros[i].Fitness + 2.0;
             }
@@ -79,5 +80,3 @@ void MovimentarDinossauros()
         }
     }
 }
-
-

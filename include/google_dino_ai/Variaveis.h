@@ -1,9 +1,5 @@
-
-
-
     PIG_Cor     Cores[8] = {CINZA, AMARELO, VERDE, VERMELHO, AZUL, CIANO, LARANJA, ROXO};
 
-    Dinossauro  Dinossauros[POPULACAO_TAMANHO];
     int         QuantidadeDinossauros = 0;
 
     Chao        chao[CHAO_QUANTIDADE];
@@ -25,4 +21,3 @@
     int         ObstaculoDaVez = 1;
     int         Geracao;
     int         DesenharTela = 1;
-

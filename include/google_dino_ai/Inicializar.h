@@ -1,6 +1,4 @@
-
-
-
+#include "google_dino_ai/Manager.h"
 
 void InicializarChao()
 {
@@ -63,7 +61,8 @@ void InicializarObstaculos()
 
 void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
 {
-    Dinossauros[Indice].Estado = 0;
+    auto& Dinossauros = manager::getDinosaurs();
+    Dinossauros[Indice].Estado = States::Standing;
     Dinossauros[Indice].X = X;
     Dinossauros[Indice].Y = Y;
     Dinossauros[Indice].Frame = 0;
@@ -75,7 +74,7 @@ void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
     }
     else
     {
-        Dinossauros[Indice].Estado = 3;
+        Dinossauros[Indice].Estado = States::Died;
         DinossaurosMortos++;
     }
 

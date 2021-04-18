@@ -1,4 +1,4 @@
-
+#include "google_dino_ai/Tipos.h"
 
 PIG_Cor calcularCor(double Intensidade, PIG_Cor CorBase)
 {
@@ -415,7 +415,8 @@ void DesenharNuvens()
 
 void DesenharAviao(int i)
 {
-    if(Dinossauros[i].Estado == 4)  /// Voando
+    auto& Dinossauros = manager::getDinosaurs();
+    if(Dinossauros[i].Estado == States::Flying)
     {
         DesenharSprite(SpriteAviao[Dinossauros[i].FrameAviao].Objeto,
                        Dinossauros[i].X + 13,
@@ -428,8 +429,9 @@ void DesenharAviao(int i)
 void DesenharDinossauros()
 {
     int Frame, Largura, Altura, Sprite;
+    auto& Dinossauros = manager::getDinosaurs();
 
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
         Sprite = Dinossauros[i].SpriteAtual;
         Frame = Dinossauros[i].sprite[Sprite].Objeto;
@@ -461,7 +463,6 @@ void Desenhar()
         DesenharFundo();
         DesenharNuvens();
         DesenharMontanhas();
-        // r();
         DesenharChao();
         DesenharObstaculos();
         DesenharDinossauros();

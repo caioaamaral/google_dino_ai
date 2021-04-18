@@ -29,9 +29,10 @@ void AplicarColisao()
     int FatorDeCorrecaoHorizontal = 7;
     int FatorDeCorrecaoVertical = 5;
 
-    for(int i=0; i<QuantidadeDinossauros; i++)
+    auto& Dinossauros = manager::getDinosaurs();
+    for(int i = 0; i < Dinossauros.size(); i++)
     {
-        if(Dinossauros[i].Estado != 3)      /// MORTO
+        if(Dinossauros[i].Estado != States::Died)
         {
             IndiceObstaculo = ProcurarProximoObstaculo(Dinossauros[i].X);
 
@@ -48,11 +49,9 @@ void AplicarColisao()
             if(verificarColisao(DinoX,      DinoY,      DinoLarg,           DinoAlt,
                                 XObstaculo, YObstaculo, LarguraObstaculo,   AlturaObstaculo) == 1)
             {
-                Dinossauros[i].Estado = 3;
+                Dinossauros[i].Estado = States::Died;
                 DinossaurosMortos = DinossaurosMortos + 1;
-                //system("pause");
             }
         }
     }
 }
-
