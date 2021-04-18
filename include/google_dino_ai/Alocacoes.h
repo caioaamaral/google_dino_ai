@@ -13,8 +13,8 @@ void AlocarDinossauro()
         Dinossauros[QuantidadeDinossauros].sprite[i] = getDinossauroSprite(i, Cores[ControladorCor]);
     }
 
-    Dinossauros[QuantidadeDinossauros].TimerFrame       = CriarTimer();
-    Dinossauros[QuantidadeDinossauros].TimerFrameAviao  = CriarTimer();
+    Dinossauros[QuantidadeDinossauros].TimerFrame       = pig::CriarTimer();
+    Dinossauros[QuantidadeDinossauros].TimerFrameAviao  = pig::CriarTimer();
     Dinossauros[QuantidadeDinossauros].ResetarFitness   = 1;
 
     Dinossauros[QuantidadeDinossauros].Cerebro = RNA_CriarRedeNeural(DINO_BRAIN_QTD_LAYERS,
@@ -45,6 +45,6 @@ void AlocarObstaculos()
 {
     for(int i=0; i<MAX_OBSTACULOS; i++)
     {
-        obstaculo[i].TimerFrames = CriarTimer();
+        obstaculo[i].TimerFrames = pig::CriarTimer();
     }
 }

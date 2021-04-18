@@ -247,7 +247,7 @@ void ConfiguracoesIniciais()
     CarregarListaObstaculos();
     InicializarGrafico();
 
-    TimerGeral          = CriarTimer();
+    TimerGeral          = pig::CriarTimer();
     Fonte               = CriarFonteNormal(PIG_RESOURCES_PATH"/arial.ttf", 15, PRETO,      0, PRETO);
     FonteVermelha       = CriarFonteNormal(PIG_RESOURCES_PATH"/arial.ttf", 15, VERMELHO,   0, PRETO);
     FonteAzul           = CriarFonteNormal(PIG_RESOURCES_PATH"/arial.ttf", 15, AZUL,       0, PRETO);
@@ -410,7 +410,7 @@ void UpdateStates()
     {
       AtualizarJanela();
       VerificarTeclas();
-      if(TempoDecorrido(TimerGeral) >= Periodo)
+      if(pig::TempoDecorrido(TimerGeral) >= Periodo)
       {
         MovimentarChao();
         MovimentarMontanhas();
@@ -435,7 +435,7 @@ void UpdateStates()
             DinossaurosMortos = POPULACAO_TAMANHO;
         }
         VerificarFimDePartida();
-        ReiniciarTimer(TimerGeral);
+        pig::ReiniciarTimer(TimerGeral);
       }
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }

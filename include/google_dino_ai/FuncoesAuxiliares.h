@@ -1,4 +1,4 @@
-
+#include <pig/PIG_Timers.h>
 
 int existeNuvem(double X, double Y)
 {
@@ -39,7 +39,7 @@ void getNextObstaculo(Obstaculo* obs, int Indice)
         obs->sprite[1] = getObstaculosSprite(obs->Tipo, 0);
     }
     obs->FrameAtual = 0;
-    ReiniciarTimer(obs->TimerFrames);
+    pig::ReiniciarTimer(obs->TimerFrames);
 
     ObstaculoDaVez++;
 }
@@ -111,5 +111,3 @@ int ProcurarProximoObstaculo(double X)
 
     return Indice;
 }
-
-

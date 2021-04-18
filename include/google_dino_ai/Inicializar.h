@@ -99,8 +99,8 @@ void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
     Dinossauros[Indice].AviaoCooldown = 0;
     Dinossauros[Indice].AviaoDeslocamento = 0;
 
-    ReiniciarTimer(Dinossauros[Indice].TimerFrame);
-    ReiniciarTimer(Dinossauros[Indice].TimerFrameAviao);
+    pig::ReiniciarTimer(Dinossauros[Indice].TimerFrame);
+    pig::ReiniciarTimer(Dinossauros[Indice].TimerFrameAviao);
 }
 
 void InicializarGrafico()
