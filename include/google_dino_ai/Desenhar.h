@@ -39,35 +39,35 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
     double EscalaAltura = ((double)AlturaPintura)/(double)(qtdNeuroEscondidas-1);
     double EscalaLargura = ((double)LarguraPintura-475)/(double)(qtdEscondidas+1);
 
-    sprintf(String,"[Obst�culo] Distancia: %.2f", Entrada[0]);
-    EscreverEsquerda(String, X + 15, YOrigem - 0*EscalaAltura -5, Fonte);
+    sprintf(String,"[Obstacle] Distancia: %.2f", Entrada[0]);
+    EscreverEsquerda(String, X - 30, YOrigem - 0*EscalaAltura -5, Fonte);
 
-    sprintf(String,"[Obst�culo] Largura: %.2f", Entrada[1]);
-    EscreverEsquerda(String, X + 15, YOrigem - 1*EscalaAltura -5, Fonte);
+    sprintf(String,"[Obstacle] Largura: %.2f", Entrada[1]);
+    EscreverEsquerda(String, X - 30, YOrigem - 1*EscalaAltura -5, Fonte);
 
-    sprintf(String,"[Obst�culo] Altura: %.2f", Entrada[2]);
-    EscreverEsquerda(String, X + 15, YOrigem - 2*EscalaAltura -5, Fonte);
+    sprintf(String,"[Obstacle] Altura: %.2f", Entrada[2]);
+    EscreverEsquerda(String, X - 30, YOrigem - 2*EscalaAltura -5, Fonte);
 
-    sprintf(String,"[Obst�culo] Comprimento: %.2f", Entrada[3]);
-    EscreverEsquerda(String, X + 15, YOrigem - 3*EscalaAltura -5, Fonte);
+    sprintf(String,"[Obstacle] Comprimento: %.2f", Entrada[3]);
+    EscreverEsquerda(String, X - 30, YOrigem - 3*EscalaAltura -5, Fonte);
 
-    sprintf(String,"[Cen�rio] Velocidade: %.2f", Entrada[4]);
-    EscreverEsquerda(String, X + 15, YOrigem - 4*EscalaAltura -5, Fonte);
+    sprintf(String,"[Scene] Velocidade: %.2f", Entrada[4]);
+    EscreverEsquerda(String, X - 30, YOrigem - 4*EscalaAltura -5, Fonte);
 
     sprintf(String,"[Dinossauro] Altura: %.2f", Entrada[5]);
-    EscreverEsquerda(String, X + 15, YOrigem - 5*EscalaAltura -5, Fonte);
+    EscreverEsquerda(String, X - 30, YOrigem - 5*EscalaAltura -5, Fonte);
 
     double temp = YOrigem - (EscalaAltura*(qtdNeuroEscondidas-2))/2.0 + (EscalaAltura*(qtdNeuroSaida-1))/2.0;
 
-    sprintf(String,"Pular");
+    sprintf(String,"Jump");
     EscreverEsquerda(String, X + Largura - 100, temp - 0*EscalaAltura -5, Fonte);
 
-    sprintf(String,"Abaixar");
+    sprintf(String,"Lay Down");
     EscreverEsquerda(String, X + Largura - 100, temp - 1*EscalaAltura -5, Fonte);
 
     if(DINO_BRAIN_QTD_OUTPUT == 3)
     {
-        sprintf(String,"Avi�o");
+        sprintf(String,"Fly");
         EscreverEsquerda(String, X + Largura - 100, temp - 2*EscalaAltura -5, Fonte);
     }
 
@@ -471,26 +471,26 @@ void Desenhar()
 
         char String[1000];
 
-        sprintf(String,"Gera��o: %d", Geracao);
+        sprintf(String,"Generation:    %d", Geracao);
         EscreverEsquerda(String, 20, BASE, Fonte);
 
-        sprintf(String,"Clock: %f segundo", Periodo);
+        sprintf(String,"Clock:    %f segundo", Periodo);
         EscreverEsquerda(String, 20, BASE-20, Fonte);
 
-        sprintf(String,"Velocidade: %.2f (%.0f pixels por segundo)", fabs(VELOCIDADE), fabs(VELOCIDADE)/Periodo);
+        sprintf(String,"Velocity:    %.2f (%.0f pixels per second)", fabs(VELOCIDADE), fabs(VELOCIDADE)/Periodo);
         EscreverEsquerda(String, 20, BASE-40, Fonte);
 
         sprintf(String,"Distancia Recorde:");
         EscreverEsquerda(String, 20, BASE-60, Fonte);
 
         sprintf(String,"%.0f pixels", DistanciaRecorde);
-        EscreverEsquerda(String, 150, BASE-60, FonteAzul);
+        EscreverEsquerda(String, 200, BASE-60, FonteAzul);
 
         sprintf(String,"Distancia Atual:");
         EscreverEsquerda(String, 20, BASE-80, Fonte);
 
         sprintf(String,"%.0f pixels", DistanciaAtual);
-        EscreverEsquerda(String, 150, BASE-80, Fonte);
+        EscreverEsquerda(String, 200, BASE-80, Fonte);
 
         // EncerrarDesenho();
     }
