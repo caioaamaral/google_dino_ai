@@ -140,7 +140,6 @@ Sprite ChaoSprite()
 
 Sprite getDinossauroSprite(int Indice, PIG_Cor cor)
 {
-    static int num_calls = 0;
     int LarguraFramesDino[10] = {40,40,55,55,40,40,40,40,39,39};
     int AlturaFramesDino[10] = {43,43,25,26,43,43,43,43,37,37};
     char String[1000];
@@ -148,7 +147,6 @@ Sprite getDinossauroSprite(int Indice, PIG_Cor cor)
 
     sprintf(String, GOOGLE_DINO_AI_RESOURCES_PATH"/imagens/dino%d.bmp", Indice);
     sprite.Objeto = CriarSprite(String);
-    std::cout << "getDinossauroSprite() call:" <<num_calls++ << "\n\n";
 
     sprite.Largura = LarguraFramesDino[Indice];
     sprite.Altura = AlturaFramesDino[Indice];

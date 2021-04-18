@@ -6,8 +6,6 @@ void AlocarDinossauro(int ControladorCor)
     int tamanho;
     auto& Dinossauros = manager::getDinosaurs();
 
-    static int num_calls = 0;
-    std::cout << "\nAlocarDinossauro() call:" << num_of_calls++ << "\n";
     for(int i = 0; i < 10; i++)
     {
         Dinossauros[QuantidadeDinossauros].sprite[i] = makeDinoSprite(i, Cores[ControladorCor]);
