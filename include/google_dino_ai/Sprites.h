@@ -1,22 +1,19 @@
-#include "Definicoes.h"
+#include <cstdio>
+
+#include "pig/PIG_Objetos.h"
+
+#include "google_dino_ai/Definicoes.h"
+#include "google_dino_ai/Tipos.h"
 
 #define OBSTACULOS_SPRITE_QUANTIDADE    8
 
-typedef struct sprite
-{
-    int Largura, Altura;
-    int Objeto;
-
-}   Sprite;
-
-    Sprite SpriteObstaculo[OBSTACULOS_SPRITE_QUANTIDADE];
-    Sprite SpriteAviao[2];
-
-    int SpriteNeuronDesativado;
-    int SpriteNeuronAtivado;
-    int SpriteLuz;
-    int SpriteSeta;
-    static int num_of_calls;
+Sprite SpriteObstaculo[OBSTACULOS_SPRITE_QUANTIDADE];
+Sprite SpriteAviao[2];
+int SpriteNeuronDesativado;
+int SpriteNeuronAtivado;
+int SpriteLuz;
+int SpriteSeta;
+static int num_of_calls;
 
 
 void InicializarSpriteAviao()
@@ -138,7 +135,7 @@ Sprite ChaoSprite()
     return sprite;
 }
 
-Sprite getDinossauroSprite(int Indice, PIG_Cor cor)
+Sprite makeDinoSprite(int Indice, PIG_Cor cor)
 {
     int LarguraFramesDino[10] = {40,40,55,55,40,40,40,40,39,39};
     int AlturaFramesDino[10] = {43,43,25,26,43,43,43,43,37,37};

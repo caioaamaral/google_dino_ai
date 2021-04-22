@@ -1,7 +1,12 @@
+#ifndef GOOGLE_DINO_AI_REDE_NEURAL_H
+#define GOOGLE_DINO_AI_REDE_NEURAL_H
+
 #include <math.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "google_dino_ai/tipos/RedeNeural.hpp"
 
 //#define AtivacaoOcultas(X)         (1.0/(1.0+exp(-X)))       /// sigmoide(x)
 //#define AtivacaoSaida(X)           (1.0/(1.0+exp(-X)))       /// sigmoide(x)
@@ -12,36 +17,6 @@
 constexpr double TAXA_APRENDIZADO = 0.1;
 constexpr double TAXA_PESO_INICIAL = 1.0;
 constexpr int BIAS = 1;
-
-
-typedef struct neuronio
-{
-    double* Peso;
-    double  Erro;
-    double  Saida;
-
-    int QuantidadeLigacoes;
-
-}   Neuronio;
-
-typedef struct camada
-{
-    Neuronio* Neuronios;
-
-    int QuantidadeNeuronios;
-
-}   Camada;
-
-typedef struct redeNeural
-{
-    Camada  CamadaEntrada;
-    Camada* CamadaEscondida;
-    Camada  CamadaSaida;
-
-    int QuantidadeEscondidas;
-
-}   RedeNeural;
-
 
 double relu(double X)
 {
@@ -99,7 +74,7 @@ void RNA_CopiarVetorParaCamadas(RedeNeural* Rede, double* Vetor)
     }
 }
 
-void RNA_CopiarParaEntrada(RedeNeural* Rede, double* VetorEntrada)
+void RNA_CopiarParaEntrada(RedeNeural* Rede, const double* VetorEntrada)
 {
     for(int i=0; i < Rede->CamadaEntrada.QuantidadeNeuronios - BIAS; i++)
     {
@@ -348,3 +323,5 @@ void RNA_SalvarRede(RedeNeural* Temp, char* String)
         fclose(f);
     }
 }
+
+#endif  // GOOGLE_DINO_AI_REDE_NEURAL_H
