@@ -15,4 +15,12 @@
 #define DINO_BRAIN_QTD_HIDE     6       /// Quantidade de neuronios nas camadas escondidas
 #define DINO_BRAIN_QTD_OUTPUT   3       /// Quantidade de neuronios na camada de saida
 
+#define LARG_GRAFICO            600
+#define CHAO_QUANTIDADE         30
+#define MONTANHA_QUANTIDADE     3
+#define NUVEM_QUANTIDADE        15
+
+#define QTD_SPRITE_CACTUS       6
+#define MAX_OBSTACULOS          7
+
 #endif  // GOOGLE_DINO_AI__DEFINICOES_HPP_

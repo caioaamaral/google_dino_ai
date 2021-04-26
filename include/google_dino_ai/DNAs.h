@@ -1,4 +1,6 @@
-#include "google_dino_ai/Manager.h"
+#include "google_dino_ai/Definicoes.h"
+#include "google_dino_ai/FuncoesAuxiliares.h"
+#include "google_dino_ai/Manager.hpp"
 
     double* DNADaVez[POPULACAO_TAMANHO];
 
@@ -11,13 +13,13 @@
 double BestFitnessGeracao()
 {
     double Maior = 0;
-    auto& Dinossauros = manager::getDinosaurs();
-    for(int i=0; i<POPULACAO_TAMANHO; i++)
+    auto Dinossauros = manager::getDinosaurs<RNA>();
+    for(const auto& Dinosaur : Dinossauros)
     {
-        if(Dinossauros[i].Fitness > Maior)
-        {
-            Maior = Dinossauros[i].Fitness;
-        }
+      if(Dinosaur.Fitness > Maior)
+      {
+          Maior = Dinosaur.Fitness;
+      }
     }
     return Maior;
 }
@@ -25,10 +27,10 @@ double BestFitnessGeracao()
 double MediaFitnessGeracao()
 {
     double Media = 0;
-    auto& Dinossauros = manager::getDinosaurs();
-    for(int i=0; i<POPULACAO_TAMANHO; i++)
+    auto Dinossauros = manager::getDinosaurs<RNA>();
+    for(const auto& Dinosaur : Dinossauros)
     {
-        Media = Media + Dinossauros[i].Fitness;
+        Media += Dinosaur.Fitness;
     }
     Media = Media/(double)POPULACAO_TAMANHO;
     return Media;
@@ -50,8 +52,8 @@ double BestFitnessEver()
 
 void InicializarDNA()
 {
-    auto& Dinossauros = manager::getDinosaurs();
-    int TamanhoDNA = Dinossauros[0].TamanhoDNA;
+    auto Dinossauros = manager::getDinosaurs<RNA>();
+    int TamanhoDNA = dynamic_cast<RNA*>(Dinossauros[0].solver.get())->TamanhoDNA;
 
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {

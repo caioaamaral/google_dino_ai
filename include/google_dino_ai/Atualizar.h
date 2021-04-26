@@ -1,20 +1,23 @@
 #include <pig/PIG_Timers.h>
 
+#include "google_dino_ai/tipos/Dinosaur.hpp"
+#include "google_dino_ai/Manager.hpp"
+
 void AtualizarMelhorDinossauro()
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     if(MODO_JOGO == 1)
     {
-        MelhorDinossauro = &Dinossauros[0];
+        manager::changeBestDino(0);
     }
 
-    if(MelhorDinossauro->Estado == 3)
+    if(manager::getBestDino().Estado == States::Died)
     {
         for(int i=0; i<POPULACAO_TAMANHO; i++)
         {
-            if(Dinossauros[i].Estado != 3)
+            if(Dinossauros[i].Estado != States::Died)
             {
-                MelhorDinossauro = &Dinossauros[i];
+                manager::changeBestDino(i);
                 break;
             }
         }
@@ -35,7 +38,7 @@ void AtualizarFramePassaro()
 
 void AtualizarFrameDinossauro()
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(pig::TempoDecorrido(Dinossauros[i].TimerFrame) >= 0.1)
@@ -48,7 +51,7 @@ void AtualizarFrameDinossauro()
 
 void AtualizarFrameAviao()
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(pig::TempoDecorrido(Dinossauros[i].TimerFrameAviao) >= 0.03)

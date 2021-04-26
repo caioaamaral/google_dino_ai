@@ -28,7 +28,7 @@ void UpdateStates();
 
 void AplicarGravidade()
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(Dinossauros[i].Y > 15)
@@ -64,10 +64,9 @@ void AplicarGravidade()
 void ControlarEstadoDinossauros()  /// Função responsavel por calcular a decisão da rede neural e aplicar no dinossauro (ou seja, é a função que faz ele pular, abaixar ou usar o aviao)
 {
     bool Abaixar = false, Pular = false, Aviao = false;
-    double Saida[10];
-    double Entrada[10];
-
-    auto& Dinossauros = manager::getDinosaurs();
+    std::array<double, 3> Saida{};
+    std::array<double, 6> Entrada{};
+    auto& Dinossauros = manager::getAllDinosaurs();
     for(int i = 0; i < QuantidadeDinossauros; i++)
     {
         if(Dinossauros[i].Estado != States::Died)
@@ -79,9 +78,7 @@ void ControlarEstadoDinossauros()  /// Função responsavel por calcular a decis
             Entrada[4] = fabs(VELOCIDADE);
             Entrada[5] = Dinossauros[i].Y;
 
-            RNA_CopiarParaEntrada(Dinossauros[i].Cerebro, Entrada);     /// Enviando informações para a rede neural
-            RNA_CalcularSaida(Dinossauros[i].Cerebro);                  /// Calculando a decisão da rede
-            RNA_CopiarDaSaida(Dinossauros[i].Cerebro, Saida);           /// Extraindo a decisão para vetor ''saida''
+            Saida = Dinossauros[i].solver->process(Entrada);
 
             if(Saida[0] == 0.0)
                 Pular = false;
@@ -229,9 +226,11 @@ void CarregarRede()
 {
     FILE* f = fopen("rede","rb");
 
-    auto& Dinossauros = manager::getDinosaurs();
-    fread(&Dinossauros[0].TamanhoDNA, 1, sizeof(int), f);
-    fread(DNADaVez[0], Dinossauros[0].TamanhoDNA, sizeof(double), f);
+    auto* first_dino_solver =
+      dynamic_cast<RNA*>(manager::getDinosaurs<RNA>()[0].solver.get());
+
+    fread(&first_dino_solver->TamanhoDNA, 1, sizeof(int), f);
+    fread(DNADaVez[0], first_dino_solver->TamanhoDNA, sizeof(double), f);
     fclose(f);
 }
 
@@ -257,7 +256,6 @@ void ConfiguracoesIniciais()
     FonteAzul           = CriarFonteNormal(PIG_RESOURCES_PATH"/arial.ttf", 15, AZUL,       0, PRETO);
     DistanciaRecorde    = 0;
     Geracao             = 0;
-    MelhorDinossauro    = &manager::getDinosaurs()[0];
 
     InicializarDNA();
     std::cout << "STARTING APP\n\n"; 
@@ -269,9 +267,11 @@ void ConfiguracoesIniciais()
 
 void RandomMutations()
 {
-    static double RangeRandom = manager::getDinosaurs()[0].TamanhoDNA;
-    Dinossauro* Vetor[POPULACAO_TAMANHO];
-    Dinossauro* Temp;
+    static double RangeRandom =
+      static_cast<RNA*>(manager::getDinosaurs<RNA>()[0].solver.get())->TamanhoDNA;
+
+    RNA* Vetor[POPULACAO_TAMANHO];
+    const Dinosaur* Temp;
 
     if(Geracao < LARG_GRAFICO)
     {
@@ -290,21 +290,19 @@ void RandomMutations()
         MediaFitnessPopulacao[GeracaoCompleta] = MediaFitnessGeracao();
     }
 
-    auto& Dinossauros = manager::getDinosaurs();
+    auto Dinossauros = manager::getDinosaurs<RNA>();
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
-        Vetor[i] = &Dinossauros[i];
+        Vetor[i] = static_cast<RNA*>(Dinossauros[i].solver.get());
     }
 
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
         for(int j=0; j<POPULACAO_TAMANHO-1; j++)
         {
-            if(Vetor[j]->Fitness < Vetor[j+1]->Fitness)
+            if(Dinossauros[j].Fitness < Dinossauros[j+1].Fitness)
             {
-                Temp = Vetor[j];
-                Vetor[j] = Vetor[j+1];
-                Vetor[j+1] = Temp;
+                std::iter_swap(Dinossauros.begin()+j, Dinossauros.begin()+j+1);
             }
         }
     }
@@ -356,15 +354,15 @@ void RandomMutations()
 
     for(int j=0; j<POPULACAO_TAMANHO; j++)  /// Copiando novos DNAs para DNAsDaVez
     {
-        for(int k=0; k<Dinossauros[j].TamanhoDNA; k++)
+        for(int k=0; k<Vetor[j]->TamanhoDNA; k++)
         {
-            DNADaVez[j][k] = Dinossauros[j].DNA[k];
+            DNADaVez[j][k] = Vetor[j]->DNA[k];
         }
     }
 
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
-        Vetor[i]->ResetarFitness = 1;
+        Dinossauros[i].ResetarFitness = 1;
     }
 
     printf("Range Random: %f\n", RangeRandom);

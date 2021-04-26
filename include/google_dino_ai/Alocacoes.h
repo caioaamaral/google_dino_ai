@@ -1,10 +1,10 @@
-#include "google_dino_ai/Manager.h"
+#include "google_dino_ai/Manager.hpp"
 
 
 void AlocarDinossauro(int ControladorCor)
 {
     int tamanho;
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
 
     for(int i = 0; i < 10; i++)
     {
@@ -15,16 +15,6 @@ void AlocarDinossauro(int ControladorCor)
     Dinossauros[QuantidadeDinossauros].TimerFrameAviao  = pig::CriarTimer();
     Dinossauros[QuantidadeDinossauros].ResetarFitness   = 1;
 
-    Dinossauros[QuantidadeDinossauros].Cerebro = RNA_CriarRedeNeural(DINO_BRAIN_QTD_LAYERS,
-                                                                     DINO_BRAIN_QTD_INPUT,
-                                                                     DINO_BRAIN_QTD_HIDE,
-                                                                     DINO_BRAIN_QTD_OUTPUT);
-
-    tamanho = RNA_QuantidadePesos(Dinossauros[QuantidadeDinossauros].Cerebro);
-
-    Dinossauros[QuantidadeDinossauros].TamanhoDNA = tamanho;
-    Dinossauros[QuantidadeDinossauros].DNA = (double*)malloc(tamanho*sizeof(double));
-
     InicializarDinossauro(QuantidadeDinossauros, NULL, 0, 0);
 
     QuantidadeDinossauros++;
@@ -33,9 +23,8 @@ void AlocarDinossauro(int ControladorCor)
 
 void AlocarDinossauros()
 {
-    auto& Dinossauros = manager::getDinosaurs();
-    Dinossauros.reserve(POPULACAO_TAMANHO);
-    Dinossauros.assign(POPULACAO_TAMANHO, Dinossauro());
+    auto& Dinossauros = manager::getAllDinosaurs();
+    Dinossauros.resize(POPULACAO_TAMANHO);
 
     int controlador_cor = 0;
 

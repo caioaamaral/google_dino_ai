@@ -1,4 +1,4 @@
-#include "google_dino_ai/Manager.h"
+#include "google_dino_ai/Manager.hpp"
 
 void MovimentarChao()
 {
@@ -60,7 +60,7 @@ void MovimentarObstaculos()
 
 void MovimentarDinossauros()
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(Dinossauros[i].Estado == States::Died)

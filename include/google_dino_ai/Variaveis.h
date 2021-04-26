@@ -6,7 +6,7 @@
     Montanha    montanha[MONTANHA_QUANTIDADE];
     Nuvem       nuvem[NUVEM_QUANTIDADE];
     Grafico     grafico;
-    Dinossauro* MelhorDinossauro;
+    // Dinossauro* MelhorDinossauro;
 
     Obstaculo   obstaculo[MAX_OBSTACULOS];
     Obstaculo   obstaculosModelo[20000];

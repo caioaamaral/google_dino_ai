@@ -1,6 +1,11 @@
+#ifndef GOOGLE_DINO_AI_GOOGLE_DINO_AI_FUNCOES_AUXILIARES_H
+#define GOOGLE_DINO_AI_GOOGLE_DINO_AI_FUNCOES_AUXILIARES_H
+
 #include <pig/PIG_Timers.h>
 
-#include "google_dino_ai/Manager.h"
+#include "google_dino_ai/Manager.hpp"
+
+using namespace google_dino_ai;
 
 int existeNuvem(double X, double Y)
 {
@@ -49,15 +54,18 @@ void getNextObstaculo(Obstaculo* obs, int Indice)
 void SalvarRedeArquivo()
 {
     double Maior = 0;
-    int Indice = 0;
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
+    RNA* BestRNA = nullptr;
 
-    for(int i=0; i<Dinossauros.size(); i++)
+    for(const auto& Dino : Dinossauros)
     {
-        if(Dinossauros[i].Fitness > Maior)
-        {
-            Maior = Dinossauros[i].Fitness;
-            Indice = i;
+        if (RNA* solver = dynamic_cast<RNA*>(Dino.solver.get())) {
+          if (!BestRNA) {
+            BestRNA = solver;
+          } else if (Dino.Fitness > Maior) {
+              Maior = Dino.Fitness;
+              BestRNA = solver;
+          }
         }
     }
 
@@ -69,11 +77,11 @@ void SalvarRedeArquivo()
             DINO_BRAIN_QTD_HIDE,
             DINO_BRAIN_QTD_OUTPUT);
 
-    FILE* f = fopen(String,"wb");
-    fwrite(&Dinossauros[Indice].TamanhoDNA,  1,                              sizeof(int), f);
-    fwrite(Dinossauros[Indice].DNA,         Dinossauros[Indice].TamanhoDNA, sizeof(double), f);
-    fclose(f);
 
+    FILE* f = fopen(String,"wb");
+    fwrite(&(BestRNA->TamanhoDNA), 1, sizeof(int), f);
+    fwrite(&(BestRNA->DNA.front()), BestRNA->TamanhoDNA, sizeof(double), f);
+    fclose(f);
 }
 
 void VerificarTeclas()
@@ -115,3 +123,5 @@ int ProcurarProximoObstaculo(double X)
 
     return Indice;
 }
+
+#endif  // GOOGLE_DINO_AI_GOOGLE_DINO_AI_FUNCOES_AUXILIARES_H

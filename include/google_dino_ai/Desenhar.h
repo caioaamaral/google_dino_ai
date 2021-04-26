@@ -26,14 +26,20 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
     double TamanhoNeuronio = 20;
     char String[1000];
     int Sprite;
-    int qtdEscondidas       = MelhorDinossauro->Cerebro->QuantidadeEscondidas;
-    int qtdNeuroEntrada     = MelhorDinossauro->Cerebro->CamadaEntrada.QuantidadeNeuronios;
-    int qtdNeuroEscondidas  = MelhorDinossauro->Cerebro->CamadaEscondida[0].QuantidadeNeuronios;
-    int qtdNeuroSaida       = MelhorDinossauro->Cerebro->CamadaSaida.QuantidadeNeuronios;
+
+    auto BestNeuralNetwork =
+      dynamic_cast<RNA*>(manager::getBestDino().solver.get())->network;
+
+    assert(BestNeuralNetwork);
+
+    int qtdEscondidas       = BestNeuralNetwork->QuantidadeEscondidas;
+    int qtdNeuroEntrada     = BestNeuralNetwork->CamadaEntrada.QuantidadeNeuronios;
+    int qtdNeuroEscondidas  = BestNeuralNetwork->CamadaEscondida[0].QuantidadeNeuronios;
+    int qtdNeuroSaida       = BestNeuralNetwork->CamadaSaida.QuantidadeNeuronios;
 
     for(int i=0; i<DINO_BRAIN_QTD_INPUT; i++)
     {
-        Entrada[i] = MelhorDinossauro->Cerebro->CamadaEntrada.Neuronios[i].Saida;
+        Entrada[i] = BestNeuralNetwork->CamadaEntrada.Neuronios[i].Saida;
     }
 
     double EscalaAltura = ((double)AlturaPintura)/(double)(qtdNeuroEscondidas-1);
@@ -88,14 +94,14 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
         if(i == 0)
         {
             qtdCamadaAnterior = qtdNeuroEntrada;
-            CamadaAnterior = &MelhorDinossauro->Cerebro->CamadaEntrada;
+            CamadaAnterior = &BestNeuralNetwork->CamadaEntrada;
             XAnterior = NeuroEntradaX;
             YAnterior = NeuroEntradaY;
         }
         else
         {
             qtdCamadaAnterior = qtdNeuroEscondidas;
-            CamadaAnterior = &MelhorDinossauro->Cerebro->CamadaEscondida[i-1];
+            CamadaAnterior = &BestNeuralNetwork->CamadaEscondida[i-1];
             XAnterior = NeuroEscondidoX[i-1];
             YAnterior = NeuroEscondidoY[i-1];
         }
@@ -107,7 +113,7 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
 
             for(int k=0; k<qtdCamadaAnterior-1; k++)
             {
-                double Peso = MelhorDinossauro->Cerebro->CamadaEscondida[i].Neuronios[j].Peso[k];
+                double Peso = BestNeuralNetwork->CamadaEscondida[i].Neuronios[j].Peso[k];
                 double Saida = CamadaAnterior->Neuronios[k].Saida;
                 if(Peso*Saida > 0)
                 {
@@ -131,7 +137,7 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
 
     for(int i=0; i<qtdNeuroSaida; i++)
     {
-        int UltimaCamada = MelhorDinossauro->Cerebro->QuantidadeEscondidas-1;
+        int UltimaCamada = BestNeuralNetwork->QuantidadeEscondidas-1;
         double temp = YOrigem - (EscalaAltura*(qtdNeuroEscondidas-2))/2.0 + (EscalaAltura*(qtdNeuroSaida-1))/2.0;
 
         NeuroSaidaX[i] = XOrigem + (qtdEscondidas+1)*EscalaLargura;
@@ -139,8 +145,8 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
 
         for(int k=0; k<qtdNeuroEscondidas-1; k++)
         {
-            double Peso = MelhorDinossauro->Cerebro->CamadaSaida.Neuronios[i].Peso[k];
-            double Saida = MelhorDinossauro->Cerebro->CamadaEscondida[UltimaCamada].Neuronios[k].Saida;
+            double Peso = BestNeuralNetwork->CamadaSaida.Neuronios[i].Peso[k];
+            double Saida = BestNeuralNetwork->CamadaEscondida[UltimaCamada].Neuronios[k].Saida;
 
             if(Peso*Saida > 0)
             {
@@ -238,7 +244,7 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
         {
 
             Sprite = SpriteNeuronDesativado;
-            double SaidaNeuronio = MelhorDinossauro->Cerebro->CamadaEscondida[i].Neuronios[j].Saida;
+            double SaidaNeuronio = BestNeuralNetwork->CamadaEscondida[i].Neuronios[j].Saida;
             if(SaidaNeuronio > 0)
             {
                 Sprite = SpriteNeuronAtivado;
@@ -260,7 +266,7 @@ void DesenharRedeNeural(int X, int Y, int Largura, int Altura)
     for(int i=0; i<qtdNeuroSaida; i++)
     {
         Sprite = SpriteNeuronDesativado;
-        double SaidaNeuronio = MelhorDinossauro->Cerebro->CamadaSaida.Neuronios[i].Saida;
+        double SaidaNeuronio = BestNeuralNetwork->CamadaSaida.Neuronios[i].Saida;
         if(SaidaNeuronio > 0.5)
         {
             Sprite = SpriteNeuronAtivado;
@@ -415,7 +421,7 @@ void DesenharNuvens()
 
 void DesenharAviao(int i)
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     if(Dinossauros[i].Estado == States::Flying)
     {
         DesenharSprite(SpriteAviao[Dinossauros[i].FrameAviao].Objeto,
@@ -429,7 +435,7 @@ void DesenharAviao(int i)
 void DesenharDinossauros()
 {
     int Frame, Largura, Altura, Sprite;
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
 
     for(int i = 0; i < Dinossauros.size(); i++)
     {

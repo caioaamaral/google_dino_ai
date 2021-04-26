@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "google_dino_ai/tipos/RedeNeural.hpp"
+using namespace google_dino_ai;
 
 //#define AtivacaoOcultas(X)         (1.0/(1.0+exp(-X)))       /// sigmoide(x)
 //#define AtivacaoSaida(X)           (1.0/(1.0+exp(-X)))       /// sigmoide(x)
@@ -45,7 +46,7 @@ double reluDx(double X)
 constexpr auto AtivacaoOcultas = relu;
 constexpr auto AtivacaoSaida = relu;
 
-void RNA_CopiarVetorParaCamadas(RedeNeural* Rede, double* Vetor)
+void RNA_CopiarVetorParaCamadas(RedeNeural* Rede, const double* Vetor)
 {
     int j,k,l;
 

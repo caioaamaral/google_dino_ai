@@ -61,13 +61,15 @@ void InicializarObstaculos()
 
 void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
 {
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     Dinossauros[Indice].Estado = States::Standing;
     Dinossauros[Indice].X = X;
     Dinossauros[Indice].Y = Y;
     Dinossauros[Indice].Frame = 0;
     Dinossauros[Indice].SpriteAtual = 0;
     Dinossauros[Indice].FrameAviao = 0;
+    Dinossauros[Indice].solver = std::make_unique<RNA>();
+
     if(Dinossauros[Indice].ResetarFitness == 1)
     {
         Dinossauros[Indice].Fitness = 0;
@@ -77,23 +79,6 @@ void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
         Dinossauros[Indice].Estado = States::Died;
         DinossaurosMortos++;
     }
-
-    if(DNA == NULL)     /// Inicializa aleatoriamente
-    {
-        for(int i=0; i<Dinossauros[Indice].TamanhoDNA; i++)
-        {
-            Dinossauros[Indice].DNA[i] = getRandomValue();
-        }
-    }
-    else                /// Inicializa com o DNA passado pelo parametro
-    {
-        for(int i=0; i<Dinossauros[Indice].TamanhoDNA; i++)
-        {
-            Dinossauros[Indice].DNA[i] = DNA[i];
-        }
-    }
-
-    RNA_CopiarVetorParaCamadas(Dinossauros[Indice].Cerebro, Dinossauros[Indice].DNA);
 
     Dinossauros[Indice].AviaoCooldown = 0;
     Dinossauros[Indice].AviaoDeslocamento = 0;

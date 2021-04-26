@@ -29,7 +29,7 @@ void AplicarColisao()
     int FatorDeCorrecaoHorizontal = 7;
     int FatorDeCorrecaoVertical = 5;
 
-    auto& Dinossauros = manager::getDinosaurs();
+    auto& Dinossauros = manager::getAllDinosaurs();
     for(int i = 0; i < Dinossauros.size(); i++)
     {
         if(Dinossauros[i].Estado != States::Died)
