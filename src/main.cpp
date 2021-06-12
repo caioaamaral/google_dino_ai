@@ -206,10 +206,12 @@ void InicializarNovaPartida()
     DinossaurosMortos = 0;
 
     InicializarObstaculos();
+    auto Dinossauros = manager::getDinosaurs<RNA>();
 
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {
-        InicializarDinossauro(i, DNADaVez[i], 300 + (rand()%200 - 100), 15);
+        auto rna_solver = static_cast<RNA*>(Dinossauros[i].solver.get());
+        InicializarDinossauro(i, 300 + (rand()%200 - 100), 15);
     }
 }
 
@@ -229,7 +231,7 @@ void CarregarRede()
     auto* first_dino_solver =
       dynamic_cast<RNA*>(manager::getDinosaurs<RNA>()[0].solver.get());
 
-    fread(&first_dino_solver->TamanhoDNA, 1, sizeof(int), f);
+    fread(&first_dino_solver->TamanhoDNA, 1, sizeof(int), f); // use ->DNA.size()
     fread(DNADaVez[0], first_dino_solver->TamanhoDNA, sizeof(double), f);
     fclose(f);
 }
@@ -268,7 +270,7 @@ void ConfiguracoesIniciais()
 void RandomMutations()
 {
     static double RangeRandom =
-      static_cast<RNA*>(manager::getDinosaurs<RNA>()[0].solver.get())->TamanhoDNA;
+      static_cast<RNA*>(manager::getDinosaurs<RNA>()[0].solver.get())->DNA.size();
 
     RNA* Vetor[POPULACAO_TAMANHO];
     const Dinosaur* Temp;
@@ -310,9 +312,9 @@ void RandomMutations()
     int Step = 1;
     for(int i=0; i<Step; i++)  /// Clonando individuos
     {
-        for(int j=Step+i; j<POPULACAO_TAMANHO; j=j+Step)
+        for(int j=Step+i; j<POPULACAO_TAMANHO; j+=Step)
         {
-            for(int k=0; k<Vetor[j]->TamanhoDNA; k++)
+            for(int k=0; k<Vetor[j]->DNA.size(); k++)
             {
                 Vetor[j]->DNA[k] = Vetor[i]->DNA[k];        /// individuo 'j' recebe dna do individuo 'i'
             }
@@ -328,7 +330,7 @@ void RandomMutations()
         {
             tipo = rand()%3;
 
-            int indice = rand()%Vetor[j]->TamanhoDNA;
+            int indice = rand()%Vetor[j]->DNA.size();
             switch(tipo)
             {
                 case 0:
@@ -339,24 +341,16 @@ void RandomMutations()
                 case 1:
                 {
                     double number = (rand()%10001)/10000.0 + 0.5;
-                    Vetor[j]->DNA[indice] = Vetor[j]->DNA[indice]*number;   /// Multiplicação aleatoria
+                    Vetor[j]->DNA[indice] *= number;   /// Multiplicação aleatoria
 
                 }   break;
                 case 2:
                 {
                     double number = getRandomValue()/100.0;
-                    Vetor[j]->DNA[indice] = Vetor[j]->DNA[indice] + number; /// Soma aleatoria
+                    Vetor[j]->DNA[indice] += number; /// Soma aleatoria
 
                 }   break;
             }
-        }
-    }
-
-    for(int j=0; j<POPULACAO_TAMANHO; j++)  /// Copiando novos DNAs para DNAsDaVez
-    {
-        for(int k=0; k<Vetor[j]->TamanhoDNA; k++)
-        {
-            DNADaVez[j][k] = Vetor[j]->DNA[k];
         }
     }
 

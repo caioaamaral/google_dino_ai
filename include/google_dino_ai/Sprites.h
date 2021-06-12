@@ -13,8 +13,6 @@ int SpriteNeuronDesativado;
 int SpriteNeuronAtivado;
 int SpriteLuz;
 int SpriteSeta;
-static int num_of_calls;
-
 
 void InicializarSpriteAviao()
 {

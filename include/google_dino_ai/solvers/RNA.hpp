@@ -14,11 +14,8 @@ public:
 
   RNA();
   std::array<double, 3> process(const std::array<double, 6>& input) override;
-  void reset(const std::vector<double>* weights);
 
-  int TamanhoDNA;
   std::vector<double> DNA;
-  // double Fitness;
   RedeNeural* network;
 };
 

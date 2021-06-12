@@ -44,7 +44,6 @@ struct Dinosaur {
   //   // this->TimerFrameAviao = other.TimerFrameAviao;
   //   // this->AviaoDeslocamento = other.AviaoDeslocamento;
   //   // this->AviaoCooldown = other.AviaoCooldown;
-  //   // this->TamanhoDNA = other.TamanhoDNA;
   //   // this->DNA = other.DNA;
   //   // this->Fitness = other.Fitness;
   //   // this->Cerebro = other.Cerebro;
@@ -66,7 +65,6 @@ struct Dinosaur {
   //   // this->TimerFrameAviao = other.TimerFrameAviao;
   //   // this->AviaoDeslocamento = other.AviaoDeslocamento;
   //   // this->AviaoCooldown = other.AviaoCooldown;
-  //   // this->TamanhoDNA = other.TamanhoDNA;
   //   // this->DNA = other.DNA;
   //   // this->Fitness = other.Fitness;
   //   // this->Cerebro = other.Cerebro;
@@ -96,7 +94,6 @@ struct Dinosaur {
   SolverBasePtr solver;
 
   // neuralnetwork stuff
-  // int TamanhoDNA;
   // double* DNA;
   // double Fitness;
   // RedeNeural* Cerebro;

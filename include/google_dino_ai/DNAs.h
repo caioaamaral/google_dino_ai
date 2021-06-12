@@ -53,7 +53,7 @@ double BestFitnessEver()
 void InicializarDNA()
 {
     auto Dinossauros = manager::getDinosaurs<RNA>();
-    int TamanhoDNA = dynamic_cast<RNA*>(Dinossauros[0].solver.get())->TamanhoDNA;
+    int TamanhoDNA = dynamic_cast<RNA*>(Dinossauros[0].solver.get())->DNA.size();
 
     for(int i=0; i<POPULACAO_TAMANHO; i++)
     {

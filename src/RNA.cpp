@@ -38,7 +38,6 @@ RNA::RNA() {
                                       DINO_BRAIN_QTD_HIDE, DINO_BRAIN_QTD_OUTPUT);
   
   auto tamanho = RNA_QuantidadePesos(this->network);
-  this->TamanhoDNA = tamanho;
   this->DNA.resize(tamanho);
 
   initializeNeuralNetwork(this->network, nullptr, this->DNA);

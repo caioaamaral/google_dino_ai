@@ -3,7 +3,6 @@
 
 void AlocarDinossauro(int ControladorCor)
 {
-    int tamanho;
     auto& Dinossauros = manager::getAllDinosaurs();
 
     for(int i = 0; i < 10; i++)
@@ -14,6 +13,7 @@ void AlocarDinossauro(int ControladorCor)
     Dinossauros[QuantidadeDinossauros].TimerFrame       = pig::CriarTimer();
     Dinossauros[QuantidadeDinossauros].TimerFrameAviao  = pig::CriarTimer();
     Dinossauros[QuantidadeDinossauros].ResetarFitness   = 1;
+    Dinossauros[QuantidadeDinossauros].solver = std::make_unique<RNA>();
 
     InicializarDinossauro(QuantidadeDinossauros, NULL, 0, 0);
 
