@@ -79,8 +79,10 @@ void SalvarRedeArquivo()
 
 
     FILE* f = fopen(String,"wb");
-    fwrite(&(BestRNA->TamanhoDNA), 1, sizeof(int), f);
-    fwrite(&(BestRNA->DNA.front()), BestRNA->TamanhoDNA, sizeof(double), f);
+
+    int dna_size = BestRNA->DNA.size();
+    fwrite(&(dna_size), 1, sizeof(int), f);
+    fwrite(&(BestRNA->DNA.front()), dna_size, sizeof(double), f);
     fclose(f);
 }
 

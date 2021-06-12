@@ -1,10 +1,13 @@
-#include "google_dino_ai/Manager.h"
+#include "google_dino_ai/Manager.hpp"
+#include "google_dino_ai/RedeNeural.h"
+#include "google_dino_ai/solvers/RNA.hpp"
+
 
 void InicializarChao()
 {
     for(int i=0; i<CHAO_QUANTIDADE; i++)
     {
-        chao[i].sprite = oSprite();
+        chao[i].sprite = ChaoSprite();
         chao[i].X = i*60.0;
         chao[i].Y = 25.0;
     }
@@ -59,7 +62,7 @@ void InicializarObstaculos()
     }
 }
 
-void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
+void InicializarDinossauro(int Indice, double X, double Y)
 {
     auto& Dinossauros = manager::getAllDinosaurs();
     Dinossauros[Indice].Estado = States::Standing;
@@ -68,14 +71,11 @@ void InicializarDinossauro(int Indice, double* DNA, double X, double Y)
     Dinossauros[Indice].Frame = 0;
     Dinossauros[Indice].SpriteAtual = 0;
     Dinossauros[Indice].FrameAviao = 0;
-    Dinossauros[Indice].solver = std::make_unique<RNA>();
 
     if(Dinossauros[Indice].ResetarFitness == 1)
     {
         Dinossauros[Indice].Fitness = 0;
-    }
-    else
-    {
+    } else {
         Dinossauros[Indice].Estado = States::Died;
         DinossaurosMortos++;
     }

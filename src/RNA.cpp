@@ -17,20 +17,18 @@ double getRandomValue()
     //return rand()%3 - 1;
 }
 
-void fillDna(std::vector<double>& dna, const std::vector<double>* weights = nullptr)
+void fillDna(std::vector<double>& dna, const std::vector<double> weights = {})
 {
-  if (!weights) {
+  if (weights.empty()) {
     std::generate(begin(dna), end(dna), getRandomValue);
   } else {
-    std::generate(begin(dna), end(dna), [i = 0, &weights]() mutable { return weights->at(i++); });
+    std::generate(begin(dna), end(dna), [i = 0, &weights]() mutable { return weights.at(i++); });
   }
 }
 
-void initializeNeuralNetwork(RedeNeural* network, const std::vector<double>* weights,
-                                            std::vector<double>& dna_out)
+void fillNeuralNetwork(RedeNeural* network, std::vector<double>& dna)
 {
-  fillDna(dna_out, weights);
-  RNA_CopiarVetorParaCamadas(network, &dna_out.front());
+  RNA_CopiarVetorParaCamadas(network, &dna.front());
 }
 
 RNA::RNA() {
@@ -38,10 +36,10 @@ RNA::RNA() {
                                       DINO_BRAIN_QTD_HIDE, DINO_BRAIN_QTD_OUTPUT);
   
   auto tamanho = RNA_QuantidadePesos(this->network);
-  this->TamanhoDNA = tamanho;
   this->DNA.resize(tamanho);
 
-  initializeNeuralNetwork(this->network, nullptr, this->DNA);
+  fillDna(this->DNA);
+  fillNeuralNetwork(this->network, this->DNA);
 }
 
 std::array<double, 3> RNA::process(const std::array<double, 6>& input)
@@ -52,10 +50,6 @@ std::array<double, 3> RNA::process(const std::array<double, 6>& input)
   RNA_CopiarDaSaida(this->network, output.begin());        /// Extraindo a decisão para vetor ''saida''
 
   return output;
-}
-
-void RNA::reset(const std::vector<double>* weights) {
-  initializeNeuralNetwork(this->network, weights, this->DNA);
 }
 
 }  // namespace google_dino_ai
